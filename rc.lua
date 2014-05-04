@@ -8,8 +8,6 @@ require("beautiful")
 require("naughty")
 -- widget lib
 require("vicious")
--- revelation Expose
-require("revelation")
 -- Load Debian menu entries
 require("debian.menu")
 
@@ -97,11 +95,13 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+mymainmenu = awful.menu({
+    items = {
+        { "awesome", myawesomemenu, beautiful.awesome_icon },
+        { "Debian", debian.menu.Debian_menu.Debian },
+        { "open terminal", terminal }
+    }
+})
 
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
@@ -124,11 +124,11 @@ vicious.register(mybatwidget, vicious.widgets.bat, "Battery: $1 $2% ($3 Remainin
 
 -- WLAN Network widget
 mywnetwidget = widget({ type = "textbox" })
-vicious.register(mywnetwidget, vicious.widgets.net, "WLAN: ${wlan0 down_kb} kbs down ${wlan0 up_kb} kbs up ", 3) 
+vicious.register(mywnetwidget, vicious.widgets.net, "wlan: ${wlan0 down_kb}/${wlan0 up_kb} kbs ", 3) 
 
 -- LAN widget
 mynetwidget = widget({ type = "textbox" })
-vicious.register(mynetwidget, vicious.widgets.net, "LAN: ${eth0 down_kb} kbs down ${eth0 up_kb} kbs up ", 3)
+vicious.register(mynetwidget, vicious.widgets.net, "lan: ${eth0 down_kb}/${eth0 up_kb} kbs ", 3)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -203,12 +203,12 @@ for s = 1, screen.count() do
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-	volwidget,
+--	    volwidget,
         mytextclock,
         s == 1 and mysystray or nil,
-	mybatwidget,
-	mynetwidget,
-	mywnetwidget,
+	    mybatwidget,
+	    mynetwidget,
+	    mywnetwidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -278,8 +278,7 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end),
-    awful.key({ modkey}, "e", revelation)
+              end)
 )
 
 clientkeys = awful.util.table.join(
